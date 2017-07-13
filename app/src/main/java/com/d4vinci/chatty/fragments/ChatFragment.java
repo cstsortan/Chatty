@@ -77,7 +77,14 @@ public class ChatFragment extends Fragment {
         btSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ref.push().setValue(new Message(etMessageField.getText().toString(), FirebaseAuth.getInstance().getCurrentUser().getUid()));
+                Message message = new Message(etMessageField.getText().toString(), FirebaseAuth.getInstance().getCurrentUser().getUid());
+                ref.push().setValue(message);
+                FirebaseDatabase
+                        .getInstance()
+                        .getReference("userMessages")
+                        .child(userUid)
+                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                        .push().setValue(message);
             }
         });
 
